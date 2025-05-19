@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>
+		Student Management System
+	</title>
+	<!---bootsrap4 css cdn-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+				<h1 class="tex-center">Update Student</h1>
+				<div class="card-body">
+					<form th:action="@{/students/{id}(id=${std.id})}" th:object="${std}" method="post">
+						<!--@ represents the context path of ur application-->
+						
+						<div class="form-group">
+							<label>Student firstname</label>
+							<input type="text" name="firstname" th:field="*{firstName}" class="form-control"
+								placeholder="Enter firstname" />
+						</div>
+						
+						<div class="form-group">
+							<label>Student lastname</label>
+							<input type="text" name="lastname" th:field="*{lastName}" class="form-control"
+								placeholder="Enter lastname" />
+						</div>
+						
+						<div class="form-group">
+							<label>Student email</label>
+							<input type="text" name="email" th:field="*{email}" class="form-control"
+								placeholder="Enter email" />
+						</div>
+						
+						<div class="box-footer">
+							<button type="submit" class="btn btn-primary">submit</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
