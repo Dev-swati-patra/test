@@ -142,11 +142,17 @@ public class StreamApi {
 //		countEachWord();
 //		countOnlyDuplicate();
 //		countCharInString();
+//		checkListEmptyOrNot();
 		// 17. How to convert a List of objects into a Map by considering duplicated
 		// keys
 		// and store them in sorted order?
 		// 20. How to check if list is empty in Java 8 using Optional, if not null
 		// iterate through the list and print the object?
+	}
+
+	private static void checkListEmptyOrNot() {
+		List<String> list = Arrays.asList("Java", "Spring", "Hibernate");
+		Optional.ofNullable(list).filter(l -> !l.isEmpty()).ifPresent(n -> n.forEach(System.out::print));
 	}
 
 	private static void countCharInString() {
