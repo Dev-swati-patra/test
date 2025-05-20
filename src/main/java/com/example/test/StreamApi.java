@@ -157,9 +157,53 @@ public class StreamApi {
 //		commonElement();
 //		averageOfElements();
 //		reverseEachWordOfString();
+//		stringAnagram();
+//		sumOfFirstTenNos();
+//		reverseIntArray();
+//		StringStartWithNumber();
+//		lastElementOfAnArray();
+		stringPalindrome();
 		// 17. How to convert a List of objects into a Map by considering duplicated
 		// keys
 		// and store them in sorted order?
+	}
+
+	private static void stringPalindrome() {
+		
+	}
+
+	private static void lastElementOfAnArray() {
+		String[] arr = { "swati", "smruti", "ishita", "kalyani", "purna" };
+		Arrays.stream(arr).skip(arr.length - 1).forEach(System.out::printf);
+
+	}
+
+	// find string which start with number
+	private static void StringStartWithNumber() {
+		List<String> list = Arrays.asList("1apple", "banana", "3mango", "orange", "42grapes");
+		List<String> collect = list.stream().filter(ch -> Character.isDigit(ch.charAt(0))).collect(Collectors.toList());
+		System.out.println(collect);
+
+	}
+
+	// reverse an integer array
+	private static void reverseIntArray() {
+		Integer[] ar = { 1, 2, 3, 4, 5, 6 };
+		List<Integer> stt = Arrays.stream(ar).sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+		System.out.println(stt);
+	}
+
+	// sum of first 10 natural numbers
+	private static void sumOfFirstTenNos() {
+		int sum = IntStream.range(1, 11).sum();
+		System.out.println(sum);
+	}
+
+	private static void stringAnagram() {
+		String st = "sgeek", st1 = "geeks";
+		String rev1 = Stream.of(st.split("")).map(String::toLowerCase).sorted().collect(Collectors.joining());
+		String rev2 = Stream.of(st1.split("")).map(String::toLowerCase).sorted().collect(Collectors.joining());
+		System.out.println(rev1.equals(rev2) ? "Anagram" : "Not Anagram");
 	}
 
 	private static void reverseEachWordOfString() {
@@ -330,6 +374,10 @@ public class StreamApi {
 		Set<Integer> set = new HashSet<Integer>();
 		List<Integer> collect = list.stream().filter(n -> !set.add(n)).collect(Collectors.toList());
 		System.out.println(collect);
+		// or
+		Integer[] ar = { 2, 3, 4, 5, 6, 2, 8, 8 };
+		Set<Integer> set1 = new HashSet<Integer>();
+		Arrays.stream(ar).filter(n -> !set1.add(n)).forEach(n -> System.out.print(n + " "));
 	}
 
 	private static void removeDuplicate() {
