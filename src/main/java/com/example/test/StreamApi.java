@@ -1,5 +1,6 @@
 package com.example.test;
 
+import java.awt.PageAttributes.PrintQualityType;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,8 +11,12 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
+import org.aspectj.weaver.NewConstructorTypeMunger;
 
 import lombok.Data;
 
@@ -143,18 +148,108 @@ public class StreamApi {
 //		countOnlyDuplicate();
 //		countCharInString();
 //		checkListEmptyOrNot();
+//		joinListOfString();
+//		mergeArray();
+//		maxMinFromList();
+//		secondLargeInArray();
+//		sortStringByLength();
+//		sumOfAllDigit();
+//		commonElement();
+//		averageOfElements();
+//		reverseEachWordOfString();
 		// 17. How to convert a List of objects into a Map by considering duplicated
 		// keys
 		// and store them in sorted order?
-		// 20. How to check if list is empty in Java 8 using Optional, if not null
-		// iterate through the list and print the object?
 	}
 
+	private static void reverseEachWordOfString() {
+		String st = "Java 8 makes things easier";
+		String str = Arrays.stream(st.split(" ")).map(w -> new StringBuilder(w).reverse().toString())
+				.collect(Collectors.joining(" "));
+		System.out.println(str);
+	}
+
+	// average of all elements of an array or list
+	public static void averageOfElements() {
+		List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);
+		double average1 = list.stream().mapToInt(i -> i).average().getAsDouble();
+		System.out.println(average1);
+		// OR
+		System.out.println();
+		Integer[] arr = { 1, 2, 3, 4, 5 };
+		double average = Arrays.stream(arr).mapToInt(Integer::intValue).average().getAsDouble();
+		System.out.println(average);
+	}
+
+	// common elements between two arrays
+	private static void commonElement() {
+		Integer[] arr1 = { 1, 2, 3, 4, 5, 7 };
+		Integer[] arr2 = { 5, 6, 7, 8, 9 };
+		Set<Integer> set = Arrays.stream(arr2).collect(Collectors.toSet());// Convert arr2 to Set for faster
+																			// lookup (O(1))
+		Arrays.stream(arr1).filter(set::contains).forEach(n -> System.out.print(n + "-"));
+		// or
+		System.out.println();
+		List<Integer> li1 = Arrays.asList(1, 2, 3, 4, 5, 7);
+		List<Integer> li2 = Arrays.asList(5, 6, 7, 8, 9);
+		li1.stream().filter(li2::contains).forEach(n -> System.out.print(n + "-"));
+	}
+
+	// sum of all digits of a number
+	private static void sumOfAllDigit() {
+		int num = 1234567;
+		int sum = String.valueOf(num).chars() // IntStream of ASCII values
+				.map(i -> i - '0') // convert ASCII to digit 0=48,1=49
+				.sum();
+		System.out.println(sum);
+	}
+
+	// sort list of strings in increasing order of their length
+	private static void sortStringByLength() {
+		List<String> list = Arrays.asList("swati", "smruti", "ishita", "kalyani", "purna");
+		List<String> collect = list.stream().sorted(Comparator.comparing(String::length)).collect(Collectors.toList());
+		System.out.println(collect);
+	}
+
+	// second largest number in an int array
+	private static void secondLargeInArray() {
+		int[] arr = { 2, 9, 10, 5, 4 };
+		Integer integer = Arrays.stream(arr).boxed().sorted(Comparator.reverseOrder()).skip(1).findFirst().get();
+		System.out.println(integer);
+	}
+
+	// Three max and min nos from the list
+	private static void maxMinFromList() {
+		List<Integer> li = Arrays.asList(1, 2, 3, 4, 5, 6, 7);
+		List<Integer> minInt = li.stream().sorted().limit(3).collect(Collectors.toList());
+		List<Integer> maxInt = li.stream().sorted(Comparator.reverseOrder()).limit(3).collect(Collectors.toList());
+		System.out.println(maxInt + "---" + minInt);
+	}
+
+	// merge two unsorted array into single sorted array
+	private static void mergeArray() {
+		int[] ar = { 2, 1, 15, 3, 10 };
+		int[] arr = { 20, 11, 5, 8 };
+		int[] array = IntStream.concat(Arrays.stream(arr), Arrays.stream(ar)).sorted().distinct().toArray();
+		System.out.println(Arrays.toString(array));
+
+	}
+
+	// join list of strings with prefix,suffix and delimeter
+	private static void joinListOfString() {
+		List<String> items = Arrays.asList("Apple", "Banana", "Cherry");
+		String collect = items.stream().collect(Collectors.joining(",", "[", "]"));
+		System.out.println(collect);
+	}
+
+	// How to check if list is empty using Optional, if not null iterate through the
+	// list and print the object?
 	private static void checkListEmptyOrNot() {
 		List<String> list = Arrays.asList("Java", "Spring", "Hibernate");
 		Optional.ofNullable(list).filter(l -> !l.isEmpty()).ifPresent(n -> n.forEach(System.out::print));
 	}
 
+	// Write a program to print the count of each character in a String?
 	private static void countCharInString() {
 		String str = "string data to count each character";
 		Map<Character, Long> charCount = str.chars() // returns an IntStream
@@ -169,6 +264,8 @@ public class StreamApi {
 		System.out.println(collect);
 	}
 
+	// How to find only duplicate elements with its count from the String ArrayList
+	// in Java8?
 	private static void countOnlyDuplicate() {
 		List<String> list = Arrays.asList("AA", "FF", "FF", "WW");
 		Map<String, Long> collect = list.stream().collect(Collectors.groupingBy(n -> n, Collectors.counting()))
@@ -176,6 +273,7 @@ public class StreamApi {
 				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
+	// How to count each element/word from the String ArrayList
 	private static void countEachWord() {
 		List<String> list = Arrays.asList("AA", "FF", "FF", "WW");
 		Map<String, Long> collect = list.stream().collect(Collectors.groupingBy(n -> n, Collectors.counting()));
@@ -246,10 +344,16 @@ public class StreamApi {
 		System.out.println(max);
 	}
 
+	// sum of all elements of an array or list
 	public static void sumOfElements() {
 		List<Integer> list = Arrays.asList(2, 3, 4, 5, 6, 78, 8);
 		int sum = list.stream().mapToInt(i -> i).sum();
 		System.out.println(sum);
+		// OR
+		System.out.println();
+		Integer[] arr = { 2, 3, 4, 5, 6, 78, 8 };
+		int sum1 = Arrays.stream(arr).mapToInt(Integer::intValue).sum();
+		System.out.println(sum1);
 	}
 
 	public static void findAllEvenNum() {
