@@ -162,14 +162,33 @@ public class StreamApi {
 //		reverseIntArray();
 //		StringStartWithNumber();
 //		lastElementOfAnArray();
-		stringPalindrome();
+//		stringPalindrome();
+		longestStringInAnArray();
 		// 17. How to convert a List of objects into a Map by considering duplicated
 		// keys
 		// and store them in sorted order?
 	}
 
+	private static void longestStringInAnArray() {
+		String[] ar = { "Java", "Stream", "Optional", "Lambda", "Expression" };
+		String result = Arrays.stream(ar).max(Comparator.comparingInt(String::length)).get();
+		System.out.println(result);
+		// or
+		String result1 = Arrays.stream(ar).reduce((str1, str2) -> str1.length() > str2.length() ? str1 : str2)
+				.orElse(null);
+		System.out.println(result1);
+	}
+
 	private static void stringPalindrome() {
-		
+		String str = "Racecar";// madam
+		String lower = str.toLowerCase();
+		boolean allMatch = IntStream.range(0, lower.length() / 2)
+				.allMatch(i -> lower.charAt(i) == lower.charAt(lower.length() - 1 - i));
+		System.out.println(allMatch);
+		// or
+		String revString = IntStream.range(0, str.length())
+				.mapToObj(i -> String.valueOf(str.charAt(str.length() - 1 - i))).collect(Collectors.joining());
+		System.out.println(revString.equalsIgnoreCase(str));
 	}
 
 	private static void lastElementOfAnArray() {
