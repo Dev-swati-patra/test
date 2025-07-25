@@ -1,22 +1,16 @@
 package com.example.test;
 
-import java.awt.PageAttributes.PrintQualityType;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import org.aspectj.weaver.NewConstructorTypeMunger;
 
 import lombok.Data;
 
@@ -137,7 +131,7 @@ public class StreamApi {
 //		findAllEvenNum();
 //		startsWith1();
 //		findDuplicate();
-//		removeDuplicate();
+//		removeDuplicateInt();
 //		firstNonRepeatchar();
 //		System.out.println(repeatAtleastTwice());
 //		cubeOfElement();
@@ -163,10 +157,25 @@ public class StreamApi {
 //		StringStartWithNumber();
 //		lastElementOfAnArray();
 //		stringPalindrome();
-		longestStringInAnArray();
+//		longestStringInAnArray();
+//		removeDuplicateFromString();
 		// 17. How to convert a List of objects into a Map by considering duplicated
 		// keys
 		// and store them in sorted order?
+	}
+
+	private static void removeDuplicateFromString() {
+		String s = "dabcaefg";
+		Arrays.stream(s.split("")).distinct().forEach(System.out::print);
+		//or
+		Set<Character> set=new HashSet<>();
+		StringBuilder st = new StringBuilder(s);
+		for (int i = 0; i < st.length(); i++) {
+			if (!set.add(st.charAt(i))) {
+				st.deleteCharAt(i);
+			}
+		}
+		System.out.println(st.toString());
 	}
 
 	private static void longestStringInAnArray() {
@@ -399,7 +408,7 @@ public class StreamApi {
 		Arrays.stream(ar).filter(n -> !set1.add(n)).forEach(n -> System.out.print(n + " "));
 	}
 
-	private static void removeDuplicate() {
+	private static void removeDuplicateInt() {
 		List<Integer> list = Arrays.asList(2, 3, 4, 5, 6, 8, 8);
 		list.stream().distinct().forEach(n -> System.out.print(n + ","));
 	}

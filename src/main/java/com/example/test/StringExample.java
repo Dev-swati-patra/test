@@ -68,7 +68,7 @@ public class StringExample {
 //		productExceptSelf();
 		// summaryRange();
 		// sumUptoTarget();
-		// squareOfSortedArray();
+		 squareOfSortedArray();
 		// jwelsAndStones();
 		// System.out.println(ranSumNotes());
 
