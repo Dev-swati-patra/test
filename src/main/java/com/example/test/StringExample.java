@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class StringExample {
 //	public static void main(String[] args) {
@@ -74,21 +76,92 @@ public class StringExample {
 		// System.out.println(ranSumNotes());
 //		groupAnagrams();
 //		reverseString();
-		checkPalindrome();
+//		checkPalindrome();
+//		checkOccuranceChar();
+		findDuplicateElement();
+
+	}
+
+	private static void findDuplicateElement() {
+		String s = "latitudeName";
+		Set<Character> set = new HashSet<>();
+		for (char c : s.toCharArray()) {
+			if (!set.add(c)) {
+				System.out.println(c);
+			}
+		}
+		// or
+		Map<Character, Integer> map = new HashMap<Character, Integer>();
+		for (char c : s.toCharArray()) {
+			map.put(c, map.getOrDefault(c, 0) + 1);
+		}
+		for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+			if (entry.getValue() > 1) {
+				System.out.println(entry.getKey());
+			}
+		}
+		// or
+		s.chars().mapToObj(c -> (char) c).filter(n -> !set.add(n)).forEach(n -> System.out.print(n + " "));
+
+		// or
+
+		s.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet().stream().filter(e -> e.getValue() > 1).forEach(e -> System.out.println(e.getKey()));
+		// or
+		s.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.forEach((k, v) -> {
+					if (v > 1)
+						System.out.print(k);
+				});
+	}
+
+	private static void checkOccuranceChar() {
+		String s = "madam";
+		Map<Character, Integer> map = new HashMap<Character, Integer>();
+//		for (int i = 0; i < s.length(); i++) {
+//
+//			if (map.containsKey(s.charAt(i))) {
+//				map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
+//			} else {
+//				map.put(s.charAt(i), 1);
+//			}
+//		}
+//		System.out.println(map);
+		// or
+		for (char c : s.toCharArray()) {
+			map.put(c, map.getOrDefault(c, 0) + 1);
+		}
+		System.out.println(map);
 
 	}
 
 	private static void checkPalindrome() {
-	
-	
-}
+		String s = "madam";
+		boolean ispalin = true;
+		String rev = new StringBuilder(s).reverse().toString();
+		System.out.println(s.equals(rev));
+		// or
+		int i = 0, j = s.length() - 1;
+		while (i < j) {
+			String sleft = s.charAt(i) + "";
+			String sright = s.charAt(j) + "";
+
+			if (!sleft.equalsIgnoreCase(sright)) {
+				ispalin = false;
+				break;
+			}
+			i++;
+			j--;
+		}
+		System.out.println(ispalin);
+	}
 
 	private static void reverseString() {
 		String s = "RAW PASSWORD";
-		String str=new StringBuilder(s).reverse().toString();
-		//or
+		String str = new StringBuilder(s).reverse().toString();
+		// or
 		for (int i = s.length() - 1; i >= 0; i--) {
-			str+=s.charAt(i)+"";
+			str += s.charAt(i) + "";
 
 		}
 		System.out.println(str);
@@ -116,23 +189,23 @@ public class StringExample {
 //			}
 //		}
 //		System.out.println(liL);
-		
-		//or------------
-		
-        Map<String, List<String>> map = new HashMap<>();
-        for (String word : input) {
-            char[] chars = word.toCharArray();
-            Arrays.sort(chars);
-            String sortedKey = new String(chars);
 
-            // Group by sorted key
-            map.computeIfAbsent(sortedKey, k -> new ArrayList<>()).add(word);
-        }
+		// or------------
 
-        // Get only the groups
-        List<List<String>> groupedAnagrams = new ArrayList<>(map.values());
+		Map<String, List<String>> map = new HashMap<>();
+		for (String word : input) {
+			char[] chars = word.toCharArray();
+			Arrays.sort(chars);
+			String sortedKey = new String(chars);
 
-        System.out.println(groupedAnagrams);
+			// Group by sorted key
+			map.computeIfAbsent(sortedKey, k -> new ArrayList<>()).add(word);
+		}
+
+		// Get only the groups
+		List<List<String>> groupedAnagrams = new ArrayList<>(map.values());
+
+		System.out.println(groupedAnagrams);
 	}
 
 	private static boolean toCompare(String string, String string2) {
