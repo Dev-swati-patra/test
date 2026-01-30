@@ -1,7 +1,9 @@
 package com.example.test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -128,7 +130,7 @@ public class StreamApi {
 
 //		sumOfElements();
 //		findMaxElement();
-//		findAllEvenNum();
+		findAllEvenNum();
 //		startsWith1();
 //		findDuplicate();
 //		removeDuplicateInt();
@@ -159,16 +161,78 @@ public class StreamApi {
 //		stringPalindrome();
 //		longestStringInAnArray();
 //		removeDuplicateFromString();
+//		secondHighestLengthWordInSentence();
+//		occuranceOfEachWord();
+		wordWithNoOfVowels();
+
 		// 17. How to convert a List of objects into a Map by considering duplicated
 		// keys
 		// and store them in sorted order?
 	}
 
+	private static void wordWithNoOfVowels() {
+		String s = "I am learning java api in springboot";
+		char[] ar = { 'a', 'e', 'i', 'o', 'u' };
+		String[] str = s.split(" ");
+		int[] intar = new int[str.length];
+		int count = 0;
+//		Map<String, Integer> map = new HashMap<String, Integer>();
+		for (int i = 0; i < str.length; i++) {
+			String key = str[i].toLowerCase();
+			int k = 0; count = 0;
+			for (char c : ar) {
+				if (key.contains(c + "")) {
+					intar[i] = ++count;
+				}
+			}
+		}
+		System.out.println(Arrays.toString(intar));
+
+	}
+
+	private static void occuranceOfEachWord() {
+		String s = "I am learning java api in springboot java";
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, Long> collect = Arrays.stream(s.split(" "))
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		System.out.println(collect);
+		// or
+		String[] str = s.split(" ");
+		for (String string : str) {
+			if (map.containsKey(string)) {
+				map.put(string, map.get(string) + 1);
+			} else {
+				map.put(string, 1);
+			}
+		}
+		System.out.println(map);
+	}
+
+	private static void secondHighestLengthWordInSentence() {
+		String s = "I am learning api in springboot";
+		String string = Arrays.stream(s.split(" ")).sorted(Comparator.comparing(String::length).reversed()).skip(1)
+				.findFirst().get();
+		// and to find length of it
+		Integer length = Arrays.stream(s.split(" ")).map(x -> x.length()).sorted(Comparator.reverseOrder()).skip(1)
+				.findFirst().get();
+		System.out.println(string + "------" + length);
+		// or
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		String[] ar = s.split(" ");
+		for (String st : ar) {
+			map.put(st, st.length());
+		}
+		List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+		list.sort(Map.Entry.comparingByValue());
+		System.out.println(list.get(list.size() - 2).getKey() + "---" + list.get(list.size() - 2).getValue());
+
+	}
+
 	private static void removeDuplicateFromString() {
-		String s = "dabcaefg";
+		String s = "dabcaefg";// output--dabcefg
 		Arrays.stream(s.split("")).distinct().forEach(System.out::print);
-		//or
-		Set<Character> set=new HashSet<>();
+		// or
+		Set<Character> set = new HashSet<>();
 		StringBuilder st = new StringBuilder(s);
 		for (int i = 0; i < st.length(); i++) {
 			if (!set.add(st.charAt(i))) {

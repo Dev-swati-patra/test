@@ -1,6 +1,7 @@
 package com.example.test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -68,9 +69,78 @@ public class StringExample {
 //		productExceptSelf();
 		// summaryRange();
 		// sumUptoTarget();
-		 squareOfSortedArray();
+//		 squareOfSortedArray();
 		// jwelsAndStones();
 		// System.out.println(ranSumNotes());
+//		groupAnagrams();
+//		reverseString();
+		checkPalindrome();
+
+	}
+
+	private static void checkPalindrome() {
+	
+	
+}
+
+	private static void reverseString() {
+		String s = "RAW PASSWORD";
+		String str=new StringBuilder(s).reverse().toString();
+		//or
+		for (int i = s.length() - 1; i >= 0; i--) {
+			str+=s.charAt(i)+"";
+
+		}
+		System.out.println(str);
+	}
+
+	private static void groupAnagrams() {
+		String[] input = { "eat", "tea", "tan", "ate", "nat", "bat" };
+//		List<String> li1 = new ArrayList<String>(Arrays.asList(input));
+//		List<String> li2 = new ArrayList<String>(Arrays.asList(input));
+//		Set<Set<String>> liL = new HashSet<Set<String>>();
+//		Set<String> set = null;
+//		for (int i = 0; i < li1.size(); i++) {
+//			if (li2.contains(li1.get(i))) {
+//				set = new HashSet<String>();
+//				set.add(li1.get(i));
+//				for (int j = i + 1; j <= li1.size() - 1; j++) {
+//					boolean bool = toCompare(li1.get(i), li1.get(j));
+//					if (bool) {
+//						set.add(li1.get(j));
+//						li2.remove(li1.get(j));
+//					}
+//
+//				}
+//				liL.add(set);
+//			}
+//		}
+//		System.out.println(liL);
+		
+		//or------------
+		
+        Map<String, List<String>> map = new HashMap<>();
+        for (String word : input) {
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+            String sortedKey = new String(chars);
+
+            // Group by sorted key
+            map.computeIfAbsent(sortedKey, k -> new ArrayList<>()).add(word);
+        }
+
+        // Get only the groups
+        List<List<String>> groupedAnagrams = new ArrayList<>(map.values());
+
+        System.out.println(groupedAnagrams);
+	}
+
+	private static boolean toCompare(String string, String string2) {
+		char[] charArray1 = string.toCharArray();
+		char[] charArray2 = string2.toCharArray();
+		Arrays.sort(charArray1);
+		Arrays.sort(charArray2);
+		return String.valueOf(charArray1).equals(String.valueOf(charArray2));
 
 	}
 
