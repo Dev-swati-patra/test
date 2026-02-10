@@ -24,5 +24,5 @@ public class WallWater {
 		}
 		System.out.println(water);
 	}
-
+	
 }

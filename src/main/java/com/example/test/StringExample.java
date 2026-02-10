@@ -1,13 +1,22 @@
 package com.example.test;
 
+import java.security.Identity;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class StringExample {
@@ -78,8 +87,222 @@ public class StringExample {
 //		reverseString();
 //		checkPalindrome();
 //		checkOccuranceChar();
-		findDuplicateElement();
+//		findDuplicateElement();
+//		secondLargestNumber();
+//		findMissingNumInArray();
+//		intersectionOfArray();
+//		mergeTwoArray();
+//		lengthOflongSubStringwithoutRepeating();
+//		kthLargestElementInArray();
+//		kthSmallestElementInArray();
+//		largest3digitOddN();
+//		sortHashmapByvalue();
+//		reverseLinkedList();
 
+	}
+
+
+	private static void reverseLinkedList() {
+		List<Integer> list = new LinkedList<Integer>();
+		list.add(23);
+		list.add(43);
+		list.add(25);
+		list.add(67);
+		Collections.reverse(list);
+		System.out.println(list);
+
+	}
+
+	private static void sortHashmapByvalue() {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("A", 30);
+		map.put("B", 50);
+		map.put("C", 20);
+
+		// Convert map entries to List
+		List<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+		list.sort(Map.Entry.comparingByValue());// ascending order
+//		list.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));//decending order
+
+		// Put into LinkedHashMap to maintain order
+		Map<String, Integer> sortedMap = new LinkedHashMap<String, Integer>();
+		for (Map.Entry<String, Integer> entry : list) {
+			sortedMap.put(entry.getKey(), entry.getValue());
+		}
+		System.out.println(sortedMap);
+		// or---------------------------------------------------------------------java 8
+		// Collectors.toMap takes four arguments: key mapper, value mapper, merge
+		// function to handle duplicate keys,
+		// and a map supplier to specify the map type.
+		Map<String, Integer> collect = map.entrySet().stream().sorted(Map.Entry.comparingByValue())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+		// or
+//		Map<String, Integer> collect1 = map.entrySet().stream().sorted(Map.Entry.comparingByValue()).collect(
+//				Collectors.toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e1, () -> new LinkedHashMap<>()));
+		System.out.println(collect);
+
+	}
+
+	private static void largest3digitOddN() {
+		String str = "30112113";
+		int lar = -1;
+//		for (int i = 0; i <= str.length() - 3; i++) {
+//			int s = Integer.parseInt(str.substring(i, i + 3));
+//			if (s % 2 != 0) {
+////				lar = s > lar ? s : lar;
+//				lar = Math.max(lar, s);
+//			}
+//		}
+		// or without using substring
+		for (int i = 0; i <= str.length() - 3; i++) {
+			int d1 = str.charAt(i) - '0';
+			int d2 = str.charAt(i + 1) - '0';
+			int d3 = str.charAt(i + 2) - '0';
+
+			int num = d1 * 100 + d2 * 10 + d3;
+			if (num % 2 != 0) {
+				lar = Math.max(lar, num);
+			}
+		}
+		System.out.println(lar);
+	}
+
+	private static void kthSmallestElementInArray() {
+		int[] nums = { 3, 2, 1, 5, 6, 4 };
+		int k = 3;
+		PriorityQueue<Integer> maxHeap = new PriorityQueue<Integer>(Collections.reverseOrder());
+		for (Integer num : nums) {
+			maxHeap.offer(num);
+			if (maxHeap.size() > k) {
+				maxHeap.poll();
+			}
+		}
+		System.out.println(maxHeap.peek());
+	}
+
+	private static void kthLargestElementInArray() {
+		int[] nums = { 3, 2, 1, 5, 6, 4 };
+		int k = 3;
+		PriorityQueue<Integer> minHeap = new PriorityQueue<Integer>();
+		for (Integer num : nums) {
+			minHeap.offer(num);
+			if (minHeap.size() > k) {
+				minHeap.poll();
+			}
+		}
+		System.out.println(minHeap.peek());
+	}
+
+	private static void lengthOflongSubStringwithoutRepeating() {
+		String s = "pwwkew";// "abcddef"
+//		int maxL = 0, left = 0;
+//		Set<Character> set = new HashSet<Character>();
+//		for (int right = 0; right < s.length(); right++) {
+//			while (set.contains(s.charAt(right))) {
+//				set.remove(s.charAt(left));
+//				left++;
+//			}
+//			set.add(s.charAt(right));
+//			maxL = Math.max(maxL, right - left + 1);
+//		}
+//		System.out.println(maxL);
+		// or
+		Map<Character, Integer> map = new HashMap<>();
+		int left = 0, max = 0;
+
+		for (int right = 0; right < s.length(); right++) {
+			if (map.containsKey(s.charAt(right))) {
+				left = Math.max(left, map.get(s.charAt(right)) + 1);
+			}
+
+			map.put(s.charAt(right), right);
+			max = Math.max(max, right - left + 1);
+		}
+		System.out.println(max);
+	}
+
+	private static void mergeTwoArray() {
+		int a[] = { 1, 2, 3, 4 };
+		int ar[] = { 5, 6, 8, 7 };
+		int arr[] = new int[a.length + ar.length];
+//		System.arraycopy(ar, 0, arr, 0, ar.length);
+//		System.arraycopy(a, 0, arr, ar.length, a.length);
+//		System.out.println(Arrays.toString(arr));
+
+		// or (using two pointer technique)
+		int i = 0, j = 0, k = 0;
+		while (i < a.length && j < ar.length) {
+			if (a[i] <= ar[j]) {
+				arr[k++] = a[i++];
+			} else {
+				arr[k++] = ar[j++];
+			}
+		}
+		while (i < a.length) {
+			arr[k++] = a[i++];
+		}
+		while (j < ar.length) {
+			arr[k++] = ar[j++];
+		}
+
+		System.out.println(Arrays.toString(arr));
+	}
+
+	private static void intersectionOfArray() {
+		int a[] = { 1, 2, 3, 4, 4 };
+		int ar[] = { 5, 6, 4, 4, 7 };
+		Set<Integer> set = new HashSet<Integer>();
+		Set<Integer> result = new HashSet<Integer>();
+		for (int integer : a) {
+			set.add(integer);
+		}
+		for (int integer : ar) {
+			if (set.contains(integer)) {
+				result.add(integer);
+			}
+		}
+		System.out.println(result);
+
+	}
+
+	private static void findMissingNumInArray() {
+		int a[] = { 1, 2, 3, 5, 6, 7 };
+//		Arrays.sort(a);
+//		int last=a[a.length-1];
+//		int sum=last*(last+1)/2,digitSum=0;
+//		for (int i = 0; i < a.length; i++) {
+//			 digitSum += a[i];
+//		}
+//		System.out.println(sum-digitSum);
+		// or using xor
+		int n = a[a.length - 1];
+		int xor = 0;
+		for (int i = 1; i <= n; i++) {
+			xor ^= i;
+		}
+		for (int i : a) {
+			xor ^= i;
+		}
+		System.out.println(xor);
+
+	}
+
+	private static void secondLargestNumber() {
+		int a[] = { 12, 35, 1, 10, 34, 1 };
+		Arrays.sort(a);
+		System.out.println(a[a.length - 2]);
+		// or
+		int larg = Integer.MIN_VALUE;
+		int secondLarg = Integer.MIN_VALUE;
+		for (int num : a) {
+			if (num > larg) {
+				secondLarg = larg;
+				larg = num;
+			} else if (num > secondLarg && num != larg) {
+				secondLarg = num;
+			}
+		}
+		System.out.println(secondLarg + " " + larg);
 	}
 
 	private static void findDuplicateElement() {
@@ -132,6 +355,9 @@ public class StringExample {
 			map.put(c, map.getOrDefault(c, 0) + 1);
 		}
 		System.out.println(map);
+		// or
+		s.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet().stream().forEach(n -> System.out.print(n + ","));
 
 	}
 

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -134,7 +135,7 @@ public class StreamApi {
 //		startsWith1();
 //		findDuplicate();
 //		removeDuplicateInt();
-//		firstNonRepeatchar();
+		firstNonRepeatchar();
 //		System.out.println(repeatAtleastTwice());
 //		cubeOfElement();
 //		convertArrayToStream();
@@ -459,6 +460,22 @@ public class StreamApi {
 		Character cc = str.chars().mapToObj(c -> (char) c).filter(ch -> str.indexOf(ch) == str.lastIndexOf(ch))
 				.findFirst().orElse(null);
 		System.out.println(cc);
+		//or
+		
+		String s = "swiss";
+//		Map<Character, Integer> map = new HashMap<Character, Integer>();
+//		for (char c : s.toCharArray()) {
+//			map.put(c, map.getOrDefault(c, 0) + 1);
+//		}
+//		for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+//			if (entry.getValue() == 1) {
+//				System.out.println(entry.getKey());
+//				break;
+//			}
+//		}
+		Entry<Character, Long> cd= s.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+				.entrySet().stream().filter(e -> e.getValue() == 1).findFirst().orElse(null);
+		System.out.println(cd.getKey());
 	}
 
 	private static void findDuplicate() {
