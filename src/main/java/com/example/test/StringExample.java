@@ -79,7 +79,7 @@ public class StringExample {
 //		checkSubsequence();
 //		productExceptSelf();
 		// summaryRange();
-		// sumUptoTarget();
+//		sumUptoTarget();
 //		 squareOfSortedArray();
 		// jwelsAndStones();
 		// System.out.println(ranSumNotes());
@@ -98,9 +98,58 @@ public class StringExample {
 //		largest3digitOddN();
 //		sortHashmapByvalue();
 //		reverseLinkedList();
-
+//		lengthOflongestSubarrwithSumK();
 	}
 
+	private static void lengthOflongestSubarrwithSumK() {
+		// Brute force
+		int arr[] = { 1, -1, 5, -2, 3 };
+		int k = 3, left = 0, sum = 0, maxL = 0;
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = i; j < arr.length; j++) {
+				sum += arr[j];
+				if (sum == k) {
+					maxL = Math.max(maxL, j - i + 1);
+				}
+
+			}
+		}
+//		System.out.println(maxL);
+		// or
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		for (int i = 0; i < arr.length; i++) {
+
+			sum += arr[i];
+
+			if (sum == k) {
+				maxL = i + 1;
+			}
+
+			if (map.containsKey(sum - k)) {
+				int len = i - map.get(sum - k);
+				maxL = Math.max(maxL, len);
+			}
+			if (!map.containsKey(sum)) {
+				map.put(sum, i);
+			}
+
+		}
+		System.out.println(maxL);
+		// -----------if all numbers are positive then use sliding window------------
+//		for (int right = 0; right < arr.length; right++) {
+//
+//			sum += arr[right];
+//
+//			while (sum > k) {
+//				sum -= arr[left];
+//				left++;
+//			}
+//
+//			if (sum == k) {
+//				maxL = Math.max(maxL, right - left + 1);
+//			}
+//		}
+	}
 
 	private static void reverseLinkedList() {
 		List<Integer> list = new LinkedList<Integer>();
@@ -336,6 +385,11 @@ public class StringExample {
 					if (v > 1)
 						System.out.print(k);
 				});
+		// or
+		List<Character> collect = s.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
+				.filter(e -> e.getValue() > 1).map(Map.Entry::getKey).collect(Collectors.toList());
+		System.out.println(collect);
 	}
 
 	private static void checkOccuranceChar() {
@@ -526,6 +580,22 @@ public class StringExample {
 			}
 		}
 		System.out.println(startIdx + "--" + lastIdx);
+
+		// or
+
+//		int left = 0, right = ar.length - 1;
+//		int tar = 6;
+//		while (left<right) {
+//			int sum=ar[left]+ar[right];
+//			if (sum==tar) 
+//				break;
+//			if(sum<tar)
+//				left++;
+//			else {
+//				right--;
+//			}
+//		}
+//		System.out.println(left+" "+right);
 	}
 //OR------
 //private static void sumUptoTarget() {

@@ -131,11 +131,11 @@ public class StreamApi {
 
 //		sumOfElements();
 //		findMaxElement();
-		findAllEvenNum();
+//		findAllEvenNum();
 //		startsWith1();
 //		findDuplicate();
 //		removeDuplicateInt();
-		firstNonRepeatchar();
+//		firstNonRepeatchar();
 //		System.out.println(repeatAtleastTwice());
 //		cubeOfElement();
 //		convertArrayToStream();
@@ -217,7 +217,9 @@ public class StreamApi {
 		Integer length = Arrays.stream(s.split(" ")).map(x -> x.length()).sorted(Comparator.reverseOrder()).skip(1)
 				.findFirst().get();
 		System.out.println(string + "------" + length);
+		
 		// or
+		
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		String[] ar = s.split(" ");
 		for (String st : ar) {
