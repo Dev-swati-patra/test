@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+
+import org.hibernate.type.NTextType;
 
 public class StringExample {
 //	public static void main(String[] args) {
@@ -99,6 +102,78 @@ public class StringExample {
 //		sortHashmapByvalue();
 //		reverseLinkedList();
 //		lengthOflongestSubarrwithSumK();
+//		subArrayWithSumZero();
+//		findTopKfrequentEelments();
+		Rough();
+	}
+
+	private static void Rough() {
+		String s = "Swati patra";
+		String[] ar=s.split(" ");
+		int i=0;
+		for (String ss :ar) {
+			StringBuilder sd=new StringBuilder(ss);
+			ar[i]=sd.reverse().toString();
+			i++;
+		}
+//		System.out.println(Arrays.toString(ar));
+		Arrays.stream(s.split(" ")).map(n->new StringBuilder(n).reverse().toString()).forEach(n->System.out.println(n));
+		}
+
+	private static void findTopKfrequentEelments() {
+		int[] nums = { 1, 1, 1, 2, 2, 3 };
+		int k = 2;
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		for (int i : nums) {
+			map.put(i, map.getOrDefault(i, 0) + 1);
+		}
+		PriorityQueue<Map.Entry<Integer, Integer>> minHeap = new PriorityQueue<Map.Entry<Integer, Integer>>(
+				(a, b) -> a.getValue() - b.getValue());
+
+		// It compares based on frequency (value).If:a.getValue() - b.getValue()
+		// Negative → a comes first..Positive → b comes first
+		for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+			minHeap.add(entry);
+			if (minHeap.size() > k) {
+				minHeap.poll();
+			}
+		}
+		int ar[] = new int[k];
+		int i = 0;
+		while (!minHeap.isEmpty()) {
+			ar[i++] = minHeap.poll().getKey();
+		}
+		System.out.println(Arrays.toString(ar));
+
+	}
+
+	private static void subArrayWithSumZero() {
+		// Note:If prefix sums at two indices are equal, then the sum of that elements
+		// between them must be zero
+		int[] arr = { 4, 2, -3, 1, 6 };
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		int sum = 0;
+		for (int i = 0; i < arr.length; i++) {
+			sum += arr[i];
+			if (sum == 0) {
+				System.out.println("Subarray found from index 0 to " + i);
+				printArray(arr, 0, i);
+			}
+			if (map.containsKey(sum)) {
+				int startIdx = map.get(sum) + 1;
+				int endIdx = i;
+				System.out.println("Subarray found from index " + startIdx + " to " + endIdx);
+				printArray(arr, startIdx, endIdx);
+			}
+			map.put(sum, i);
+		}
+
+	}
+
+	private static void printArray(int[] arr, int start, int end) {
+		for (int i = start; i <= end; i++) {
+			System.out.print(arr[i] + " ");
+		}
 	}
 
 	private static void lengthOflongestSubarrwithSumK() {

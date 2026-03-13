@@ -11,13 +11,13 @@ class Node {
 	Node(int d) {
 		data = d;
 		next = null;
-		//for doblyLinkedList
-		prev=null;
+		// for doblyLinkedList
+		prev = null;
 	}
 }
 
 public class SingleLinkedList {
-	Node head;
+	static Node head;
 
 	// Insert node at the beginning
 	void insertAtFirst(int data) {
@@ -182,9 +182,89 @@ public class SingleLinkedList {
 	void print() {
 		Node node = head;
 		while (node != null) {
-			System.out.print(node.data + " ");
+			System.out.print(node.data + "->");
 			node = node.next;
 		}
+	}
+
+	Node reverseFirstKNode() {
+		Node curNode = head, prvNode = null;
+		int k = 3, len = 0;
+		if (curNode == null || k <= 1) {
+			return head;
+		}
+
+		while (curNode != null && len < k) {
+			Node nextNode = curNode.next;
+			curNode.next = prvNode;
+			prvNode = curNode;
+			curNode = nextNode;
+			len++;
+		}
+		head.next = curNode;
+		head = prvNode;
+		return head;
+	}
+
+	Node reverseBetweenPosition() {
+		Node curNode = head, prvNode = null;
+		int m = 1, n = 5, len = 1;
+
+		while (len < m) {
+			prvNode = curNode;
+			curNode = curNode.next;
+			len++;
+		}
+		Node startNode = prvNode;
+		Node endNode = curNode;
+		while (len <= n) {
+			Node nexNode = curNode.next;
+			curNode.next = prvNode;
+			prvNode = curNode;
+			curNode = nexNode;
+			len++;
+		}
+		if (startNode != null) {
+			startNode.next = prvNode;
+		} else {
+			head = prvNode; // if m == 1
+		}
+		endNode.next = curNode;
+
+		return head;
+	}
+
+	Node reverseInGroupsOfK(Node curHead, int k) {
+		Node curNode = curHead;
+		k = 2;
+		int count = 0;
+		if (curNode == null && k <= 1) {
+			return curNode;
+		}
+		// Step 1: Check if we have at least k nodes
+		while (curNode != null && count < k) {
+			curNode = curNode.next;
+			count++;
+		}
+		if (count < k) {
+			return curHead;
+		}
+
+		// Step 2: Reverse first k nodes
+		Node prvNode = null;
+		curNode = curHead;
+		count = 0;
+		while (curNode != null && count < k) {
+			Node nexNode = curNode.next;
+			curNode.next = prvNode;
+			prvNode = curNode;
+			curNode = nexNode;
+			count++;
+		}
+		// Step 3: Recursively reverse remaining list
+		curHead.next = reverseInGroupsOfK(curNode, k);
+		return prvNode;
+
 	}
 
 	public static void main(String[] args) {
@@ -198,26 +278,28 @@ public class SingleLinkedList {
 		list.insertAt(3, 4);
 		list.print();
 		System.out.println();
-		list.deleteByKey(7);
-		list.print();
+//		list.deleteByKey(7);
+//		list.print();
 		System.out.println("\nlength is " + list.findLength());
-		list.swapping(5, 8);
-		list.print();
-		System.out.println();
-		list.reverseNode();
-		list.print();
-		System.out.println();
-		// merge two sorted linkedlist
-		Node aNode = new Node(5);
-		aNode.next = new Node(10);
-		aNode.next.next = new Node(15);
-		aNode.next.next.next = new Node(40);
-		Node bNode = new Node(2);
-		bNode.next = new Node(3);
-		bNode.next.next = new Node(20);
-		list.merge(aNode, bNode);
-		System.out.println();
-		list.rotate(4);
+//		list.swapping(5, 8);
+//		list.print();
+//		System.out.println();
+//		list.reverseNode();
+//		list.print();
+//		System.out.println();
+//		// merge two sorted linkedlist
+//		Node aNode = new Node(5);
+//		aNode.next = new Node(10);
+//		aNode.next.next = new Node(15);
+//		aNode.next.next.next = new Node(40);
+//		Node bNode = new Node(2);
+//		bNode.next = new Node(3);
+//		bNode.next.next = new Node(20);
+//		list.merge(aNode, bNode);
+//		System.out.println();
+//		list.rotate(4);
+//		list.print();
+		head = list.reverseInGroupsOfK(head, 2);
 		list.print();
 
 	}
