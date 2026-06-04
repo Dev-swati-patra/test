@@ -16,11 +16,13 @@ import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.hibernate.type.NTextType;
+import org.springframework.web.bind.annotation.GetMapping;
 
 public class StringExample {
 //	public static void main(String[] args) {
@@ -77,6 +79,7 @@ public class StringExample {
 
 //	}
 	public static void main(String[] args) {
+		// commonSubString, lengthOflongSubStringwithoutRepeating,
 //		System.out.println(commonSubString());
 //		romanToDigit();
 //		checkSubsequence();
@@ -104,21 +107,61 @@ public class StringExample {
 //		lengthOflongestSubarrwithSumK();
 //		subArrayWithSumZero();
 //		findTopKfrequentEelments();
+//		firstNonRepeatingCharacter();
+//		reverseEachWordOfString();
 		Rough();
 	}
 
 	private static void Rough() {
-		String s = "Swati patra";
-		String[] ar=s.split(" ");
-		int i=0;
-		for (String ss :ar) {
-			StringBuilder sd=new StringBuilder(ss);
-			ar[i]=sd.reverse().toString();
-			i++;
+		
+	}
+
+	private static void reverseEachWordOfString() {
+		String str = "Java is powerful";
+		String[] ar = str.split(" ");
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < ar.length; i++) {
+			s.append(new StringBuilder(ar[i]).reverse().append(" "));
 		}
-//		System.out.println(Arrays.toString(ar));
-		Arrays.stream(s.split(" ")).map(n->new StringBuilder(n).reverse().toString()).forEach(n->System.out.println(n));
+		// or (without stringbuilder)
+		String[] arr = new String[ar.length];
+		for (int i = 0; i < ar.length; i++) {
+			int len = ar[i].length();
+			arr[i] = "";
+			for (int j = len - 1; j >= 0; j--) {
+				arr[i] += ar[i].charAt(j) + "";
+			}
+			ar[i] = arr[i];
 		}
+		System.out.println(Arrays.toString(arr));// O(n) means the algorithm runs proportional to the number of
+													// characters processed. not O(n²) because loops are nested over
+													// different words, not
+													// over the entire string repeatedly.
+
+	}
+
+	private static void firstNonRepeatingCharacter() {
+		String str = "aabccdeff";
+		for (int i = 0; i < str.length(); i++) {
+			if (str.indexOf(str.charAt(i)) == str.lastIndexOf(str.charAt(i))) {
+				System.out.println(str.charAt(i));
+				break;
+			}
+		}
+//		or
+		Map<Character, Integer> map = new LinkedHashMap<Character, Integer>();// hashmap doesnot maintain order so You
+																				// may NOT get the first non-repeating
+																				// character
+		for (int i = 0; i < str.length(); i++) {
+			map.put(str.charAt(i), map.getOrDefault(str.charAt(i), 0) + 1);
+		}
+		for (Map.Entry<Character, Integer> m : map.entrySet()) {
+			if (m.getValue() == 1) {
+				System.out.println(m.getKey());
+				break;
+			}
+		}
+	}
 
 	private static void findTopKfrequentEelments() {
 		int[] nums = { 1, 1, 1, 2, 2, 3 };
@@ -319,34 +362,34 @@ public class StringExample {
 
 	private static void lengthOflongSubStringwithoutRepeating() {
 		String s = "pwwkew";// "abcddef"
-//		int maxL = 0, left = 0;
-//		Set<Character> set = new HashSet<Character>();
-//		for (int right = 0; right < s.length(); right++) {
-//			while (set.contains(s.charAt(right))) {
-//				set.remove(s.charAt(left));
-//				left++;
-//			}
-//			set.add(s.charAt(right));
-//			maxL = Math.max(maxL, right - left + 1);
-//		}
-//		System.out.println(maxL);
-		// or
-		Map<Character, Integer> map = new HashMap<>();
-		int left = 0, max = 0;
-
+		int maxL = 0, left = 0;
+		Set<Character> set = new HashSet<Character>();
 		for (int right = 0; right < s.length(); right++) {
-			if (map.containsKey(s.charAt(right))) {
-				left = Math.max(left, map.get(s.charAt(right)) + 1);
+			while (set.contains(s.charAt(right))) {
+				set.remove(s.charAt(left));
+				left++;
 			}
-
-			map.put(s.charAt(right), right);
-			max = Math.max(max, right - left + 1);
+			set.add(s.charAt(right));
+			maxL = Math.max(maxL, right - left + 1);
 		}
-		System.out.println(max);
+		System.out.println(maxL);
+		// or
+//		Map<Character, Integer> map = new HashMap<>();
+//		int left = 0, max = 0;
+//
+//		for (int right = 0; right < s.length(); right++) {
+//			if (map.containsKey(s.charAt(right))) {
+//				left = Math.max(left, map.get(s.charAt(right)) + 1);
+//			}
+//
+//			map.put(s.charAt(right), right);
+//			max = Math.max(max, right - left + 1);
+//		}
+//		System.out.println(max);
 	}
 
 	private static void mergeTwoArray() {
-		int a[] = { 1, 2, 3, 4 };
+		int a[] = { 1, 2, 3, 4, 10 };
 		int ar[] = { 5, 6, 8, 7 };
 		int arr[] = new int[a.length + ar.length];
 //		System.arraycopy(ar, 0, arr, 0, ar.length);

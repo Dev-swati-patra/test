@@ -133,9 +133,9 @@ public class StreamApi {
 //		findMaxElement();
 //		findAllEvenNum();
 //		startsWith1();
-//		findDuplicate();
+		findDuplicate();
 //		removeDuplicateInt();
-//		firstNonRepeatchar();
+		firstNonRepeatchar();
 //		System.out.println(repeatAtleastTwice());
 //		cubeOfElement();
 //		convertArrayToStream();
@@ -180,7 +180,8 @@ public class StreamApi {
 //		Map<String, Integer> map = new HashMap<String, Integer>();
 		for (int i = 0; i < str.length; i++) {
 			String key = str[i].toLowerCase();
-			int k = 0; count = 0;
+			int k = 0;
+			count = 0;
 			for (char c : ar) {
 				if (key.contains(c + "")) {
 					intar[i] = ++count;
@@ -217,9 +218,9 @@ public class StreamApi {
 		Integer length = Arrays.stream(s.split(" ")).map(x -> x.length()).sorted(Comparator.reverseOrder()).skip(1)
 				.findFirst().get();
 		System.out.println(string + "------" + length);
-		
+
 		// or
-		
+
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		String[] ar = s.split(" ");
 		for (String st : ar) {
@@ -462,8 +463,8 @@ public class StreamApi {
 		Character cc = str.chars().mapToObj(c -> (char) c).filter(ch -> str.indexOf(ch) == str.lastIndexOf(ch))
 				.findFirst().orElse(null);
 		System.out.println(cc);
-		//or
-		
+		// or
+
 		String s = "swiss";
 //		Map<Character, Integer> map = new HashMap<Character, Integer>();
 //		for (char c : s.toCharArray()) {
@@ -475,15 +476,16 @@ public class StreamApi {
 //				break;
 //			}
 //		}
-		Entry<Character, Long> cd= s.chars().mapToObj(c -> (char) c).collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-				.entrySet().stream().filter(e -> e.getValue() == 1).findFirst().orElse(null);
+		Entry<Character, Long> cd = s.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
+				.filter(e -> e.getValue() == 1).findFirst().orElse(null);
 		System.out.println(cd.getKey());
 	}
 
 	private static void findDuplicate() {
-		List<Integer> list = Arrays.asList(2, 3, 4, 5, 6, 2, 8, 8);
+		List<Integer> list = Arrays.asList(2, 3, 4, 5, 6, 2, 8, 8, 8);
 		Set<Integer> set = new HashSet<Integer>();
-		List<Integer> collect = list.stream().filter(n -> !set.add(n)).collect(Collectors.toList());
+		Set<Integer> collect = list.stream().filter(n -> !set.add(n)).collect(Collectors.toSet());
 		System.out.println(collect);
 		// or
 		Integer[] ar = { 2, 3, 4, 5, 6, 2, 8, 8 };
