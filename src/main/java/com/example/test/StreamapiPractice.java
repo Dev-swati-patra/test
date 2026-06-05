@@ -9,8 +9,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
@@ -43,17 +45,11 @@ public class StreamapiPractice {
 //		sortInDecending();
 //		concatStringByreduce();
 //		findMaxByReduce();
+//		countFrequencyEachElement();
+//		firstRepeatedChar();
 		rough();
 	}
-
-	private static void secondHighestNumber() {
-		List<Integer> list = Arrays.asList(101, 20, 20, 303, 303, 40, 45, 78, 90, 90);
-		list.stream().sorted(Collections.reverseOrder()).distinct().skip(1).limit(1).forEach(System.out::println);
-		//or
-		Integer intt = list.stream().sorted(Collections.reverseOrder()).distinct().skip(1).findFirst().orElse(null);
-		System.out.println(intt);
-	}
-
+	
 	private static void rough() {
 		List<Integer> list = Arrays.asList(101, 20, 20, 303, 40, 45, 78, 90, 90);
 		Set<Integer> set = new HashSet<Integer>();
@@ -61,21 +57,51 @@ public class StreamapiPractice {
 		list.stream().sorted(Collections.reverseOrder()).skip(1).limit(1).forEach(System.out::println);
 		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 		String s = "swiss";
-		s.chars().mapToObj(c -> (char) c).filter(ch -> s.indexOf(ch) == s.lastIndexOf(ch)).forEach(System.out::println);
+		Character orElse = s.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
+				.filter(e -> e.getValue() > 1).map(Map.Entry::getKey).findFirst().orElse(null);
+		System.out.println(orElse);
 		// limit()
 		List<Integer> collect = list.stream().sorted(Collections.reverseOrder()).skip(1).limit(1)
 				.collect(Collectors.toList());
-		System.out.println(collect2);
+//		System.out.println(collect2);
 
 		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
 				new Employee("sima", "developer", 20));
 		int sum = employee.stream().map(Employee::getSalary).reduce(0, Integer::sum);
+		Map<String, List<Employee>> collect3 = employee.stream().collect(Collectors.groupingBy(Employee::getDepartment));
+		System.out.println(collect3);
 //		Map<String, List<Employee>> collect = employee.stream().collect(Collectors.groupingBy(Employee::getDepartment));
 //		System.out.println(sum);
 
 //		List<Integer> list = List.of(1, 2, 3, 4, 5, 6, 6, 2, 8);
 //		List<Integer> collect = list.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
 //		list.stream().reduce(0,Integer::sum);
+	}
+
+	private static void firstRepeatedChar() {
+		String s = "swiss";
+		Set<Character> set=new HashSet<Character>();
+		Character orElse = s.chars().mapToObj(c->(char)c).filter(n->!set.add(n)).findFirst().orElse(null);//o(n)
+		//or
+		Character orElse2 = s.chars().mapToObj(c->(char)c).filter(ch->s.indexOf(ch)!=s.lastIndexOf(ch)).findFirst().orElse(null);//O(n²)
+		System.out.println(orElse2);
+		}
+
+	private static void countFrequencyEachElement() {
+		List<Integer> list = Arrays.asList(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		Map<Integer, Long> collect = list.stream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		System.out.println(collect);
+	}
+
+	private static void secondHighestNumber() {
+		List<Integer> list = Arrays.asList(101, 20, 20, 303, 303, 40, 45, 78, 90, 90);
+		list.stream().sorted(Collections.reverseOrder()).distinct().skip(1).limit(1).forEach(System.out::println);
+		// or
+		Integer intt = list.stream().sorted(Collections.reverseOrder()).distinct().skip(1).findFirst().orElse(null);
+		System.out.println(intt);
 	}
 
 	private static void findMaxByReduce() {

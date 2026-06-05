@@ -5,11 +5,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -133,7 +134,7 @@ public class StreamApi {
 //		findMaxElement();
 //		findAllEvenNum();
 //		startsWith1();
-		findDuplicate();
+//		findDuplicate();
 //		removeDuplicateInt();
 		firstNonRepeatchar();
 //		System.out.println(repeatAtleastTwice());
@@ -148,7 +149,7 @@ public class StreamApi {
 //		joinListOfString();
 //		mergeArray();
 //		maxMinFromList();
-//		secondLargeInArray();
+		secondLargeInArray();
 //		sortStringByLength();
 //		sumOfAllDigit();
 //		commonElement();
@@ -480,6 +481,11 @@ public class StreamApi {
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
 				.filter(e -> e.getValue() == 1).findFirst().orElse(null);
 		System.out.println(cd.getKey());
+		// or
+		Character result = s.chars().mapToObj(c -> (char) c)
+				.collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()))
+				.entrySet().stream().filter(e -> e.getValue() == 1).map(Map.Entry::getKey).findFirst().orElse(null);
+		System.out.println(result);//LinkedHashMap preserves insertion order.
 	}
 
 	private static void findDuplicate() {
