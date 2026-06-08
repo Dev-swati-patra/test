@@ -38,6 +38,7 @@ public class StreamapiPractice {
 //		sortBySalary();
 //		findSumOfSalary();
 //		groupByDepartment();
+//		highestPaidEmployeeInEachDept();
 //		reverseEachWord();
 //		groupElementsByEvenOdd();
 //		removeDuplicateEmployee();
@@ -49,44 +50,36 @@ public class StreamapiPractice {
 //		firstRepeatedChar();
 		rough();
 	}
-	
+
 	private static void rough() {
 		List<Integer> list = Arrays.asList(101, 20, 20, 303, 40, 45, 78, 90, 90);
-		Set<Integer> set = new HashSet<Integer>();
-		List<Integer> collect2 = list.stream().filter(n -> !set.add(n)).collect(Collectors.toList());
-		list.stream().sorted(Collections.reverseOrder()).skip(1).limit(1).forEach(System.out::println);
-		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-		String s = "swiss";
-		Character orElse = s.chars().mapToObj(c -> (char) c)
-				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
-				.filter(e -> e.getValue() > 1).map(Map.Entry::getKey).findFirst().orElse(null);
-		System.out.println(orElse);
-		// limit()
-		List<Integer> collect = list.stream().sorted(Collections.reverseOrder()).skip(1).limit(1)
-				.collect(Collectors.toList());
-//		System.out.println(collect2);
+//		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+//		String s = "swiss";
+//		Character orElse = s.chars().mapToObj(c -> (char) c)
+//				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
+//				.filter(e -> e.getValue() > 1).map(Map.Entry::getKey).findFirst().orElse(null);
+//		System.out.println(orElse);
 
+		List<Integer> collect = list.stream().distinct().filter(n -> n % 2 == 0).collect(Collectors.toList());
+		List<Integer> collect1 = list.stream().distinct().filter(n -> n % 2 != 0).collect(Collectors.toList());
+		int sum = list.stream().reduce(0, Integer::sum);
+		int max = list.stream().reduce(Integer::max).orElse(Integer.MIN_VALUE);
+		int min = list.stream().reduce(Integer::min).orElse(Integer.MAX_VALUE);
+		System.err.println(min);
 		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
 				new Employee("sima", "developer", 20));
-		int sum = employee.stream().map(Employee::getSalary).reduce(0, Integer::sum);
-		Map<String, List<Employee>> collect3 = employee.stream().collect(Collectors.groupingBy(Employee::getDepartment));
-		System.out.println(collect3);
-//		Map<String, List<Employee>> collect = employee.stream().collect(Collectors.groupingBy(Employee::getDepartment));
-//		System.out.println(sum);
 
-//		List<Integer> list = List.of(1, 2, 3, 4, 5, 6, 6, 2, 8);
-//		List<Integer> collect = list.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-//		list.stream().reduce(0,Integer::sum);
 	}
 
 	private static void firstRepeatedChar() {
 		String s = "swiss";
-		Set<Character> set=new HashSet<Character>();
-		Character orElse = s.chars().mapToObj(c->(char)c).filter(n->!set.add(n)).findFirst().orElse(null);//o(n)
-		//or
-		Character orElse2 = s.chars().mapToObj(c->(char)c).filter(ch->s.indexOf(ch)!=s.lastIndexOf(ch)).findFirst().orElse(null);//O(n²)
+		Set<Character> set = new HashSet<Character>();
+		Character orElse = s.chars().mapToObj(c -> (char) c).filter(n -> !set.add(n)).findFirst().orElse(null);// o(n)
+		// or
+		Character orElse2 = s.chars().mapToObj(c -> (char) c).filter(ch -> s.indexOf(ch) != s.lastIndexOf(ch))
+				.findFirst().orElse(null);// O(n²)
 		System.out.println(orElse2);
-		}
+	}
 
 	private static void countFrequencyEachElement() {
 		List<Integer> list = Arrays.asList(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
@@ -159,13 +152,25 @@ public class StreamapiPractice {
 		Optional<Integer> reduce = list.stream().reduce((a, b) -> a + b);
 		System.out.println(reduce.get());
 		// or
-		list.stream().reduce(0, Integer::sum);
+		int sum = list.stream().reduce(0, Integer::sum);
+		// or
+		int sum1 = list.stream().reduce(Integer::sum).orElse(0);
 	}
 
 	private static void maxInList() {
 		List<Integer> list = List.of(1, 2, 3, 4, 5, 6, 6, 2, 8);
 		Integer orElse = list.stream().max(Integer::compareTo).orElse(0);
+		// or
+		int max = list.stream().reduce(Integer::max).orElse(Integer.MIN_VALUE);
 		System.out.println(orElse);
+	}
+
+	private static void highestPaidEmployeeInEachDept() {
+		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
+				new Employee("sima", "developer", 20));
+		Map<String, Optional<Employee>> collect = employee.stream().collect(Collectors
+				.groupingBy(Employee::getDepartment, Collectors.maxBy(Comparator.comparing(Employee::getSalary))));
+		System.out.println(collect);
 	}
 
 	private static void groupByDepartment() {
