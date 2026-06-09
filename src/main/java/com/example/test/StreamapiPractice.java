@@ -48,7 +48,14 @@ public class StreamapiPractice {
 //		findMaxByReduce();
 //		countFrequencyEachElement();
 //		firstRepeatedChar();
+//		findSecondHighestNum();
 		rough();
+	}
+
+	private static void findSecondHighestNum() {
+		List<Integer> list = Arrays.asList(101, 20, 20, 303, 40, 45, 78, 90, 90);
+		Integer integer = list.stream().distinct().sorted(Collections.reverseOrder()).skip(1).findFirst().orElse(null);
+		System.out.println(integer);
 	}
 
 	private static void rough() {
@@ -65,7 +72,7 @@ public class StreamapiPractice {
 		int sum = list.stream().reduce(0, Integer::sum);
 		int max = list.stream().reduce(Integer::max).orElse(Integer.MIN_VALUE);
 		int min = list.stream().reduce(Integer::min).orElse(Integer.MAX_VALUE);
-		System.err.println(min);
+//		System.err.println(min);
 		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
 				new Employee("sima", "developer", 20));
 
