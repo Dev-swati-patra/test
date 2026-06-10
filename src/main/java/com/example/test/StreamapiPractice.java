@@ -49,7 +49,15 @@ public class StreamapiPractice {
 //		countFrequencyEachElement();
 //		firstRepeatedChar();
 //		findSecondHighestNum();
+//		getAllEmployee();
 		rough();
+	}
+
+	private static void getAllEmployee() {
+		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
+				new Employee("sima", "developer", 20));
+		List<String> collect2 = employee.stream().map(Employee::getName).collect(Collectors.toList());
+		System.err.println(collect2);
 	}
 
 	private static void findSecondHighestNum() {
@@ -66,7 +74,6 @@ public class StreamapiPractice {
 //				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream()
 //				.filter(e -> e.getValue() > 1).map(Map.Entry::getKey).findFirst().orElse(null);
 //		System.out.println(orElse);
-
 		List<Integer> collect = list.stream().distinct().filter(n -> n % 2 == 0).collect(Collectors.toList());
 		List<Integer> collect1 = list.stream().distinct().filter(n -> n % 2 != 0).collect(Collectors.toList());
 		int sum = list.stream().reduce(0, Integer::sum);
