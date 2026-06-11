@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.util.comparator.Comparators;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -50,20 +52,10 @@ public class StreamapiPractice {
 //		firstRepeatedChar();
 //		findSecondHighestNum();
 //		getAllEmployee();
-		rough();
-	}
-
-	private static void getAllEmployee() {
-		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
-				new Employee("sima", "developer", 20));
-		List<String> collect2 = employee.stream().map(Employee::getName).collect(Collectors.toList());
-		System.err.println(collect2);
-	}
-
-	private static void findSecondHighestNum() {
-		List<Integer> list = Arrays.asList(101, 20, 20, 303, 40, 45, 78, 90, 90);
-		Integer integer = list.stream().distinct().sorted(Collections.reverseOrder()).skip(1).findFirst().orElse(null);
-		System.out.println(integer);
+//		getEmployeeNameAsCommaSeparatedString();
+		findSecondHighestSalaryEmp();
+		countEmpInEachDepart();
+//		rough();
 	}
 
 	private static void rough() {
@@ -82,7 +74,36 @@ public class StreamapiPractice {
 //		System.err.println(min);
 		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
 				new Employee("sima", "developer", 20));
+	}
 
+	private static void countEmpInEachDepart() {
+		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
+				new Employee("sima", "developer", 20));
+	}
+
+	private static void findSecondHighestSalaryEmp() {
+		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
+				new Employee("sima", "developer", 20));
+	}
+
+	private static void getEmployeeNameAsCommaSeparatedString() {
+		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
+				new Employee("sima", "developer", 20));
+		String collect = employee.stream().map(Employee::getName).collect(Collectors.joining(","));
+		System.out.println(collect);
+	}
+
+	private static void getAllEmployee() {
+		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
+				new Employee("sima", "developer", 20));
+		List<String> collect2 = employee.stream().map(Employee::getName).collect(Collectors.toList());
+		System.err.println(collect2);
+	}
+
+	private static void findSecondHighestNum() {
+		List<Integer> list = Arrays.asList(101, 20, 20, 303, 40, 45, 78, 90, 90);
+		Integer integer = list.stream().distinct().sorted(Collections.reverseOrder()).skip(1).findFirst().orElse(null);
+		System.out.println(integer);
 	}
 
 	private static void firstRepeatedChar() {
@@ -203,7 +224,7 @@ public class StreamapiPractice {
 
 	private static void maxSalary() {
 		List<Employee> employee = List.of(new Employee("swati", "puri", 12), new Employee("sima", "puri", 15));
-		Employee employee2 = employee.stream().max(Comparator.comparing(Employee::getSalary)).get();
+		Employee employee2 = employee.stream().max(Comparator.comparing(Employee::getSalary)).orElse(null);
 		System.out.println(employee2);
 	}
 
