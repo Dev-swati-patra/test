@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.util.comparator.Comparators;
@@ -53,7 +54,7 @@ public class StreamapiPractice {
 //		findSecondHighestNum();
 //		getAllEmployee();
 //		getEmployeeNameAsCommaSeparatedString();
-		findSecondHighestSalaryEmp();
+//		findSecondHighestSalaryEmp();
 		countEmpInEachDepart();
 //		rough();
 	}
@@ -84,6 +85,8 @@ public class StreamapiPractice {
 	private static void findSecondHighestSalaryEmp() {
 		List<Employee> employee = List.of(new Employee("swati", "hr", 12), new Employee("sima", "hr", 15),
 				new Employee("sima", "developer", 20));
+		 Employee orElse = employee.stream().distinct().sorted(Comparator.comparing(Employee::getSalary).reversed()).skip(1).findFirst().orElse(null);
+		System.out.println(orElse.getName());
 	}
 
 	private static void getEmployeeNameAsCommaSeparatedString() {
